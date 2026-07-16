@@ -1,5 +1,6 @@
 import json
 from typing import List, Tuple, Dict
+import events
 
 
 class SeasonManager:
@@ -80,6 +81,11 @@ class SeasonManager:
             if engine.match_history:
                 record = engine.match_history[-1]
                 results.append(record)
+                # hook de eventos para cada partida executada na rodada
+                try:
+                    events.record_match_events(engine, record)
+                except Exception:
+                    pass
         return results
 
     @staticmethod

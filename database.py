@@ -2,16 +2,26 @@ import random
 import json
 
 class Player:
-    def __init__(self, name, position, fis, tec, dec, star=False):
+    def __init__(self, name, position, fis, tec, dec, star=False, morale: int = 50, injured: bool = False):
         self.name = name
         self.position = position  # 'GL', 'DF', 'MC', 'AT'
         self.fis = fis            # Físico (1 a 5)
         self.tec = tec            # Técnica (1 a 5)
         self.dec = dec            # Decisão (1 a 5)
         self.star = star          # Estrela ⭐ (True/False)
+        self.morale = int(morale)
+        self.injured = bool(injured)
 
     def get_average_force(self):
-        return round((self.fis + self.tec + self.dec) / 3, 1)
+        """Calcula força média ajustando por moral e status de lesão.
+        Jogadores lesionados têm força reduzida; moral aplica um multiplicador leve.
+        """
+        base = round((self.fis + self.tec + self.dec) / 3, 1)
+        if self.injured:
+            base = max(0.1, base - 1.5)
+        # moral 50 => fator 1.0, moral 100 => ~1.25, moral 0 => ~0.75
+        morale_factor = 1 + (self.morale - 50) / 200.0
+        return round(max(0.1, base * morale_factor), 1)
 
     def to_dict(self):
         return {
@@ -20,7 +30,9 @@ class Player:
             "fis": self.fis,
             "tec": self.tec,
             "dec": self.dec,
-            "star": self.star
+            "star": self.star,
+            "morale": self.morale,
+            "injured": self.injured
         }
 
 class Team:
@@ -107,7 +119,9 @@ def carregar_jogo(caminho_arquivo="savegame.json"):
                     p_dados["fis"],
                     p_dados["tec"],
                     p_dados["dec"],
-                    p_dados["star"]
+                    star=p_dados.get("star", False),
+                    morale=p_dados.get("morale", 50),
+                    injured=p_dados.get("injured", False)
                 )
                 time.add_player(player)
             times.append(time)

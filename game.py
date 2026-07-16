@@ -1,5 +1,6 @@
 import database
 import stats
+import eventsimport training
 
 class GameEngine:
     def __init__(self):
@@ -36,6 +37,64 @@ class GameEngine:
         except Exception as e:
             # não quebra o fluxo de salvamento de jogo principal
             print(f"[WARN] falha ao salvar histórico: {e}")
+
+    def run_training_session(self, player, training_type: str = 'fis', intensity: int = 1, cost: int = 1000):
+        """Executa uma sessão de treino para um jogador específico.
+        - player: database.Player (instância)
+        - training_type: 'fis' | 'tec' | 'dec' (atributo a treinar)
+        - intensity: número inteiro indicando intensidade (máx. alteração possível)
+        - cost: custo em fundos do time
+
+        Retorna um dicionário com detalhes do treino realizado.
+        """
+        # verifica fundos
+        team = self.player_team
+        if team is None:
+            raise ValueError("Nenhum time do jogador carregado para cobrar o custo do treino.")
+
+        if team.funds < cost:
+            return {
+                'ok': False,
+                'reason': 'funds',
+                'message': 'Fundos insuficientes para realizar o treino.'
+            }
+
+        # cobra custo
+        team.funds -= cost
+        self.funds = team.funds
+
+        # aplica treino: incremento aleatório entre 0 e intensity (inteiro), máximo 5
+        before = getattr(player, training_type, None)
+        if before is None:
+            # atributo inválido
+            return {'ok': False, 'reason': 'attr', 'message': 'Atributo de treino inválido.'}
+
+        # usa mesmo gerador de database para consistência
+        incr = database.random.randint(0, max(0, int(intensity)))
+        # estrelas têm pequeno bônus
+        if getattr(player, 'star', False):
+            if database.random.random() < 0.5:
+                incr += 1
+
+        after = min(5, before + incr)
+        setattr(player, training_type, after)
+
+        # registra no arquivo training.json
+        record = {
+            'player': player.name,
+            'team': team.name,
+            'type': training_type,
+            'before': before,
+            'after': after,
+            'delta': after - before,
+            'cost': cost
+        }
+        try:
+            training.salvar_carregar_treinos(record)
+        except Exception:
+            pass
+
+        return {'ok': True, 'record': record}
 
     def simulate_match(self, team1, team2):
         """Modo rápido (texto) de simulação baseado nas regras em GAME_MECHANICS.md.
@@ -130,6 +189,12 @@ class GameEngine:
             "events": events
         }
         self.match_history.append(match_record)
+
+        # registrar e processar eventos pós-jogo (lesões, moral, eventos aleatórios)
+        try:
+            events.record_match_events(self, match_record)
+        except Exception:
+            pass
 
         # tenta salvar histórico (não quebra se houver erro)
         try:

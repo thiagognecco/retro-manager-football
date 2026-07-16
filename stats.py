@@ -61,3 +61,35 @@ def gols_por_time(history: List[Dict[str, Any]]) -> Dict[str, int]:
             if team:
                 counts[team] = counts.get(team, 0) + 1
     return counts
+
+
+def export_history_to_csv(history: List[Dict[str, Any]], filepath: str = 'match_history_export.csv') -> str:
+    """Exporta o histórico de partidas para CSV.
+    Cada linha representa uma partida com campos básicos (team1, team2, score1, score2, winner) e uma coluna 'events' com JSON.
+    Retorna o caminho do arquivo escrito.
+    """
+    import csv
+    import json as _json
+
+    if not isinstance(history, list):
+        history = []
+
+    fieldnames = ['team1', 'team2', 'score1', 'score2', 'winner', 'events']
+    try:
+        with open(filepath, 'w', encoding='utf-8-sig', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for m in history:
+                row = {
+                    'team1': m.get('team1'),
+                    'team2': m.get('team2'),
+                    'score1': m.get('score1'),
+                    'score2': m.get('score2'),
+                    'winner': m.get('winner'),
+                    'events': _json.dumps(m.get('events', []), ensure_ascii=False)
+                }
+                writer.writerow(row)
+    except Exception:
+        # silenciosamente falha para não interromper o jogo
+        pass
+    return filepath
