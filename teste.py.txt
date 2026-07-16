@@ -1,0 +1,29 @@
+import pygame
+import sys
+
+# Inicializa o Pygame
+pygame.init()
+
+# Define o tamanho da tela (Janela do Jogo)
+LARGURA = 800
+ALTURA = 600
+tela = pygame.display.set_mode((LARGURA, ALTURA))
+pygame.display.set_caption("Retro Manager Football - Teste de Campo")
+
+# Cor Verde Campo (RGB: Red, Green, Blue)
+VERDE_CAMPO = (34, 139, 34)
+
+# Loop principal do jogo
+rodando = True
+while rodando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+            pygame.quit()
+            sys.exit()
+            
+    # Pinta a tela com a cor do campo
+    tela.fill(VERDE_CAMPO)
+    
+    # Atualiza a tela
+    pygame.display.flip()

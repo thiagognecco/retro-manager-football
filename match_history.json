@@ -1,0 +1,32 @@
+[
+    {
+        "team1": "Tabajara FC",
+        "team2": "Varzeano United",
+        "score1": 0,
+        "score2": 1,
+        "winner": "Varzeano United",
+        "events": [
+            {
+                "team": "Varzeano United",
+                "scorer": "Gabriel Almeida",
+                "minute": 57
+            }
+        ]
+    },
+    {
+        "team1": "Tabajara FC",
+        "team2": "Varzeano United",
+        "score1": 0,
+        "score2": 0,
+        "winner": null,
+        "events": []
+    },
+    {
+        "team1": "Tabajara FC",
+        "team2": "Varzeano United",
+        "score1": 0,
+        "score2": 0,
+        "winner": null,
+        "events": []
+    }
+]

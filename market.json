@@ -1,0 +1,17 @@
+{
+    "offers": [],
+    "bids": [],
+    "history": [
+        {
+            "trade_id": "714d76f1-de8e-4b50-a768-fec4d141fcc9",
+            "seller": "Seller FC",
+            "buyer": "Buyer United",
+            "player": {
+                "name": "João Silva",
+                "position": "MC"
+            },
+            "price": 99000,
+            "timestamp": "2026-07-16T06:13:40.548247Z"
+        }
+    ]
+}

@@ -1,0 +1,378 @@
+[
+    {
+        "name": "Tabajara FC",
+        "funds": 150000,
+        "players": [
+            {
+                "name": "Danilo Oliveira",
+                "position": "GL",
+                "fis": 1,
+                "tec": 3,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Vitor Barbosa",
+                "position": "DF",
+                "fis": 1,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Yuri Almeida",
+                "position": "DF",
+                "fis": 2,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Neymar Almeida",
+                "position": "DF",
+                "fis": 3,
+                "tec": 2,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Everton Almeida",
+                "position": "DF",
+                "fis": 2,
+                "tec": 3,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Gabriel Lima",
+                "position": "MC",
+                "fis": 1,
+                "tec": 2,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Marquinhos Silva",
+                "position": "MC",
+                "fis": 3,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Lucas Almeida",
+                "position": "MC",
+                "fis": 3,
+                "tec": 1,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Pedro Santos",
+                "position": "MC",
+                "fis": 3,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Alisson Souza",
+                "position": "AT",
+                "fis": 3,
+                "tec": 3,
+                "dec": 5,
+                "star": true
+            },
+            {
+                "name": "Bruno Costa",
+                "position": "AT",
+                "fis": 1,
+                "tec": 3,
+                "dec": 3,
+                "star": false
+            }
+        ]
+    },
+    {
+        "name": "Varzeano United",
+        "funds": 150000,
+        "players": [
+            {
+                "name": "Neymar Ferreira",
+                "position": "GL",
+                "fis": 1,
+                "tec": 3,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Marquinhos Ferreira",
+                "position": "DF",
+                "fis": 2,
+                "tec": 1,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Alisson Oliveira",
+                "position": "DF",
+                "fis": 2,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Vitor Barbosa",
+                "position": "DF",
+                "fis": 2,
+                "tec": 2,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Vitor Oliveira",
+                "position": "DF",
+                "fis": 1,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Lucas Silva",
+                "position": "MC",
+                "fis": 1,
+                "tec": 2,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Neymar Lima",
+                "position": "MC",
+                "fis": 1,
+                "tec": 2,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Casemiro Costa",
+                "position": "MC",
+                "fis": 3,
+                "tec": 3,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Lucas Nascimento",
+                "position": "MC",
+                "fis": 1,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Marquinhos Silva",
+                "position": "AT",
+                "fis": 4,
+                "tec": 4,
+                "dec": 4,
+                "star": true
+            },
+            {
+                "name": "Danilo Lima",
+                "position": "AT",
+                "fis": 1,
+                "tec": 3,
+                "dec": 1,
+                "star": false
+            }
+        ]
+    },
+    {
+        "name": "Íbis Cover",
+        "funds": 150000,
+        "players": [
+            {
+                "name": "Bruno Nascimento",
+                "position": "GL",
+                "fis": 1,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Casemiro Ferreira",
+                "position": "DF",
+                "fis": 2,
+                "tec": 3,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Lucas Silva",
+                "position": "DF",
+                "fis": 2,
+                "tec": 1,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Casemiro Nascimento",
+                "position": "DF",
+                "fis": 2,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Yuri Almeida",
+                "position": "DF",
+                "fis": 2,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Rodrigo Rodrigues",
+                "position": "MC",
+                "fis": 3,
+                "tec": 2,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Danilo Silva",
+                "position": "MC",
+                "fis": 3,
+                "tec": 3,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Gabriel Barbosa",
+                "position": "MC",
+                "fis": 2,
+                "tec": 2,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Alisson Rodrigues",
+                "position": "MC",
+                "fis": 2,
+                "tec": 1,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Everton Rodrigues",
+                "position": "AT",
+                "fis": 5,
+                "tec": 3,
+                "dec": 4,
+                "star": true
+            },
+            {
+                "name": "Pedro Barbosa",
+                "position": "AT",
+                "fis": 1,
+                "tec": 1,
+                "dec": 1,
+                "star": false
+            }
+        ]
+    },
+    {
+        "name": "Chinelinho Esporte Clube",
+        "funds": 150000,
+        "players": [
+            {
+                "name": "Vitor Souza",
+                "position": "GL",
+                "fis": 3,
+                "tec": 3,
+                "dec": 3,
+                "star": true
+            },
+            {
+                "name": "Alisson Oliveira",
+                "position": "DF",
+                "fis": 3,
+                "tec": 2,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Thiago Ferreira",
+                "position": "DF",
+                "fis": 1,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Rodrigo Costa",
+                "position": "DF",
+                "fis": 1,
+                "tec": 1,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Everton Souza",
+                "position": "DF",
+                "fis": 3,
+                "tec": 1,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Alisson Costa",
+                "position": "MC",
+                "fis": 3,
+                "tec": 1,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Gabriel Souza",
+                "position": "MC",
+                "fis": 1,
+                "tec": 1,
+                "dec": 2,
+                "star": false
+            },
+            {
+                "name": "Danilo Almeida",
+                "position": "MC",
+                "fis": 1,
+                "tec": 3,
+                "dec": 3,
+                "star": false
+            },
+            {
+                "name": "Bruno Nascimento",
+                "position": "MC",
+                "fis": 1,
+                "tec": 1,
+                "dec": 1,
+                "star": false
+            },
+            {
+                "name": "Marquinhos Lima",
+                "position": "AT",
+                "fis": 4,
+                "tec": 3,
+                "dec": 5,
+                "star": true
+            },
+            {
+                "name": "Rodrigo Oliveira",
+                "position": "AT",
+                "fis": 2,
+                "tec": 3,
+                "dec": 3,
+                "star": false
+            }
+        ]
+    }
+]
