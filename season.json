@@ -1,0 +1,46 @@
+[
+    {
+        "team": "Íbis Cover",
+        "played": 6,
+        "points": 11,
+        "wins": 3,
+        "draws": 2,
+        "losses": 1,
+        "gf": 10,
+        "ga": 9,
+        "gd": 1
+    },
+    {
+        "team": "Chinelinho Esporte Clube",
+        "played": 6,
+        "points": 10,
+        "wins": 3,
+        "draws": 1,
+        "losses": 2,
+        "gf": 11,
+        "ga": 9,
+        "gd": 2
+    },
+    {
+        "team": "Tabajara FC",
+        "played": 6,
+        "points": 6,
+        "wins": 1,
+        "draws": 3,
+        "losses": 2,
+        "gf": 5,
+        "ga": 6,
+        "gd": -1
+    },
+    {
+        "team": "Varzeano United",
+        "played": 6,
+        "points": 5,
+        "wins": 1,
+        "draws": 2,
+        "losses": 3,
+        "gf": 5,
+        "ga": 7,
+        "gd": -2
+    }
+]
