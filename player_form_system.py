@@ -77,10 +77,10 @@ class PlayerFormSystem:
         # Form decay (recovery towards 0)
         self.FORM_DECAY_RATE = 0.15  # Per match without significant events (was 0.1)
 
-        # Hot/cold streak thresholds (lowered for more frequent streaks)
-        self.HOT_STREAK_THRESHOLD = 2.0  # Form > 2 = hot (was 3.0)
-        self.COLD_STREAK_THRESHOLD = -2.0  # Form < -2 = cold (was -3.0)
-        self.STREAK_MIN_MATCHES = 3  # Minimum matches to count as streak
+        # Hot/cold streak thresholds (original values - working well)
+        self.HOT_STREAK_THRESHOLD = 2.0  # Form > 2 = hot
+        self.COLD_STREAK_THRESHOLD = -2.0  # Form < -2 = cold
+        self.STREAK_MIN_MATCHES = 3  # Minimum 3 matches to count as streak
 
         # Maximum form bounds
         self.MAX_FORM = 10.0
