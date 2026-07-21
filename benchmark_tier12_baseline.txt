@@ -1,0 +1,61 @@
+================================================================================
+TIER 1+2 BENCHMARK REPORT - CPU BASELINE
+================================================================================
+
+Status: RUNNING...
+Date: 2026-07-21
+
+This report documents the baseline CPU-only performance to determine if GPU
+optimization is worthwhile.
+
+KEY METRICS (to be populated):
+- Total time for 50 matches: ?
+- Average time per match: ?
+- Time per frame (6ms target): ?
+- Total frames processed: 270,000 (50 matches × 5400 frames/match)
+
+PROFILING BREAKDOWN (from cProfile):
+
+1. SPATIAL/GRID QUERIES (GPU candidate)
+   ✓ Highly parallelizable (all 22 players independently)
+   Time: ? ms
+   Percentage: ? %
+
+2. TACTICAL/GRAPH COMPUTATION (GPU candidate)
+   ✓ GNN predictions - matrix operations
+   Time: ? ms
+   Percentage: ? %
+
+3. MOVEMENT CALCULATIONS (GPU candidate)
+   ✓ Batch movement for 22 players
+   Time: ? ms
+   Percentage: ? %
+
+4. BEHAVIOR TREE TRAVERSAL (CPU-only)
+   ✗ Sequential decision making per player
+   Time: ? ms
+   Percentage: ? %
+
+5. FORM/CARD/INJURY UPDATES (CPU-only)
+   ✗ Simple math, overhead > computation
+   Time: ? ms
+   Percentage: ? %
+
+6. EVENT PROCESSING (CPU-only)
+   ✗ Few events per frame
+   Time: ? ms
+   Percentage: ? %
+
+PARALLELIZABLE vs SEQUENTIAL:
+- Parallelizable total: ? ms (? %)
+- Sequential total: ? ms (? %)
+
+GPU RECOMMENDATION:
+[To be determined after profiling analysis]
+
+NEXT STEPS:
+1. Run analyze_profile.py to categorize functions
+2. Make GPU/CPU decision based on profiling data
+3. If GPU approved: implement optimization
+
+================================================================================

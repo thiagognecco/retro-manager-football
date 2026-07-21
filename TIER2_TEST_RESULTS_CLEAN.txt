@@ -4,84 +4,84 @@ TIER 2 INTEGRATION TEST - 50 Matches (CLEAN RUN)
 
 Running 50 matches with TIER 1 + TIER 2 systems (CLEAN)...
 
-Match  1: 1-1 | Corners:13 (1) | FKs:4 (0) | Form:+6.47 | 46.3s
-Match  2: 1-1 | Corners:12 (2) | FKs:9 (0) | Form:+2.95 | 41.6s
-Match  3: 3-1 | Corners: 8 (1) | FKs:1 (0) | Form:+6.09 | 43.7s
-Match  4: 2-1 | Corners: 8 (1) | FKs:3 (0) | Form:+7.17 | 36.1s
-Match  5: 3-0 | Corners:18 (1) | FKs:4 (0) | Form:+6.54 | 38.7s
-Match  6: 6-0 | Corners: 9 (0) | FKs:6 (0) | Form:+6.83 | 33.1s
-Match  7: 2-0 | Corners:14 (2) | FKs:3 (0) | Form:+6.13 | 33.7s
-Match  8: 1-1 | Corners: 8 (1) | FKs:7 (0) | Form:+6.15 | 33.2s
-Match  9: 2-0 | Corners:13 (0) | FKs:6 (0) | Form:+6.45 | 31.0s
-Match 10: 7-0 | Corners:16 (1) | FKs:3 (0) | Form:+6.75 | 39.2s
-Match 11: 6-0 | Corners:10 (1) | FKs:3 (0) | Form:+6.79 | 33.3s
-Match 12: 1-1 | Corners:12 (1) | FKs:6 (0) | Form:+6.10 | 33.6s
-Match 13: 3-0 | Corners: 9 (0) | FKs:2 (0) | Form:+6.41 | 31.9s
-Match 14: 3-0 | Corners:13 (0) | FKs:5 (0) | Form:+5.42 | 32.0s
-Match 15: 2-0 | Corners:15 (0) | FKs:5 (0) | Form:+5.68 | 29.7s
-Match 16: 7-1 | Corners:14 (1) | FKs:1 (0) | Form:+6.61 | 32.4s
-Match 17: 2-0 | Corners:14 (0) | FKs:5 (0) | Form:+6.41 | 32.0s
-Match 18: 8-0 | Corners:13 (0) | FKs:4 (0) | Form:+7.09 | 30.2s
-Match 19: 6-0 | Corners:12 (0) | FKs:2 (0) | Form:+6.58 | 29.1s
-Match 20: 1-0 | Corners:11 (0) | FKs:5 (0) | Form:+6.42 | 31.7s
-Match 21: 1-0 | Corners:11 (0) | FKs:1 (0) | Form:+5.49 | 31.6s
-Match 22: 2-0 | Corners: 5 (0) | FKs:5 (0) | Form:+6.01 | 32.0s
-Match 23: 3-2 | Corners:12 (2) | FKs:6 (0) | Form:+6.80 | 32.9s
-Match 24: 3-0 | Corners:11 (0) | FKs:2 (0) | Form:+2.26 | 29.5s
-Match 25: 2-0 | Corners:15 (1) | FKs:5 (0) | Form:+6.87 | 34.7s
-Match 26: 0-0 | Corners:12 (0) | FKs:4 (0) | Form:+0.35 | 33.2s
-Match 27: 4-0 | Corners:18 (0) | FKs:5 (0) | Form:+6.53 | 31.2s
-Match 28: 5-1 | Corners:17 (1) | FKs:9 (0) | Form:+6.71 | 29.4s
-Match 29: 3-0 | Corners: 8 (0) | FKs:0 (0) | Form:+6.24 | 31.1s
-Match 30: 1-1 | Corners:10 (2) | FKs:5 (0) | Form:+6.48 | 32.4s
-Match 31: 1-0 | Corners:16 (1) | FKs:2 (0) | Form:+5.53 | 32.3s
-Match 32: 6-1 | Corners:12 (4) | FKs:3 (0) | Form:+5.85 | 29.0s
-Match 33: 3-0 | Corners:10 (0) | FKs:2 (0) | Form:+6.23 | 31.6s
-Match 34: 0-0 | Corners:16 (0) | FKs:6 (0) | Form:+5.92 | 34.7s
-Match 35: 0-0 | Corners: 9 (0) | FKs:1 (0) | Form:+3.14 | 30.3s
-Match 36: 0-0 | Corners:11 (0) | FKs:5 (0) | Form:+2.55 | 30.7s
-Match 37: 5-0 | Corners: 9 (1) | FKs:1 (0) | Form:+6.80 | 32.8s
-Match 38: 4-0 | Corners: 7 (0) | FKs:3 (0) | Form:+6.38 | 29.9s
-Match 39: 4-1 | Corners:11 (1) | FKs:4 (0) | Form:+6.57 | 30.2s
-Match 40: 1-2 | Corners:12 (1) | FKs:2 (0) | Form:+6.19 | 29.5s
-Match 41: 2-0 | Corners:14 (0) | FKs:3 (0) | Form:+6.50 | 30.1s
-Match 42: 2-2 | Corners: 8 (1) | FKs:3 (0) | Form:+6.10 | 27.7s
-Match 43: 5-0 | Corners: 8 (0) | FKs:2 (0) | Form:+6.55 | 27.9s
-Match 44: 0-1 | Corners:13 (1) | FKs:2 (0) | Form:+6.23 | 29.3s
-Match 45: 5-1 | Corners:14 (0) | FKs:5 (0) | Form:+6.56 | 29.4s
-Match 46: 0-0 | Corners:14 (0) | FKs:4 (0) | Form:+0.43 | 31.4s
-Match 47: 0-1 | Corners:13 (1) | FKs:5 (0) | Form:+6.29 | 30.6s
-Match 48: 1-0 | Corners: 8 (1) | FKs:4 (0) | Form:+5.42 | 26.6s
-Match 49: 3-0 | Corners: 9 (1) | FKs:8 (0) | Form:+6.34 | 30.3s
-Match 50: 2-0 | Corners:16 (1) | FKs:5 (0) | Form:+5.56 | 27.9s
+Match  1: 3-1 | Corners:14 (1) | FKs:4 (0) | Form:+0.08 | 20.3s
+Match  2: 3-0 | Corners: 5 (0) | FKs:4 (0) | Form:+0.25 | 18.4s
+Match  3: 1-0 | Corners:13 (0) | FKs:6 (0) | Form:+0.17 | 19.1s
+Match  4: 1-0 | Corners:12 (0) | FKs:2 (0) | Form:+0.15 | 20.3s
+Match  5: 1-0 | Corners:11 (0) | FKs:7 (0) | Form:+0.17 | 21.2s
+Match  6: 1-1 | Corners:10 (0) | FKs:2 (0) | Form:+0.27 | 22.3s
+Match  7: 1-1 | Corners:14 (1) | FKs:2 (0) | Form:+0.97 | 18.7s
+Match  8: 2-0 | Corners:15 (2) | FKs:8 (0) | Form:+0.11 | 19.5s
+Match  9: 2-0 | Corners: 9 (1) | FKs:2 (0) | Form:+0.42 | 17.7s
+Match 10: 2-0 | Corners:10 (1) | FKs:6 (0) | Form:+0.11 | 19.6s
+Match 11: 4-0 | Corners:12 (1) | FKs:3 (0) | Form:+0.37 | 19.0s
+Match 12: 1-0 | Corners: 9 (0) | FKs:7 (0) | Form:+0.13 | 17.4s
+Match 13: 6-1 | Corners:11 (1) | FKs:5 (0) | Form:+0.96 | 19.3s
+Match 14: 1-1 | Corners:13 (1) | FKs:6 (0) | Form:+0.88 | 19.3s
+Match 15: 2-0 | Corners: 4 (0) | FKs:3 (1) | Form:+0.01 | 17.8s
+Match 16: 2-1 | Corners:13 (1) | FKs:6 (0) | Form:+0.21 | 17.4s
+Match 17: 0-0 | Corners:15 (0) | FKs:4 (0) | Form:+0.68 | 18.7s
+Match 18: 1-1 | Corners:16 (2) | FKs:7 (0) | Form:+0.40 | 20.3s
+Match 19: 2-0 | Corners: 8 (1) | FKs:5 (0) | Form:+0.39 | 19.2s
+Match 20: 3-0 | Corners:10 (0) | FKs:6 (0) | Form:+0.80 | 20.0s
+Match 21: 0-0 | Corners:12 (0) | FKs:3 (0) | Form:+0.28 | 19.0s
+Match 22: 0-0 | Corners:11 (0) | FKs:3 (0) | Form:+0.05 | 17.4s
+Match 23: 2-0 | Corners: 9 (0) | FKs:1 (0) | Form:+0.06 | 18.0s
+Match 24: 0-0 | Corners: 9 (0) | FKs:3 (0) | Form:+0.27 | 18.3s
+Match 25: 2-0 | Corners: 8 (2) | FKs:1 (0) | Form:+0.92 | 18.3s
+Match 26: 3-1 | Corners:11 (1) | FKs:4 (0) | Form:+0.24 | 19.7s
+Match 27: 1-1 | Corners: 6 (1) | FKs:3 (0) | Form:+0.10 | 21.9s
+Match 28: 1-0 | Corners:12 (0) | FKs:2 (0) | Form:+0.05 | 22.1s
+Match 29: 2-0 | Corners:14 (1) | FKs:2 (0) | Form:+0.66 | 18.4s
+Match 30: 0-0 | Corners:10 (0) | FKs:7 (0) | Form:+0.03 | 18.9s
+Match 31: 1-0 | Corners:10 (0) | FKs:7 (0) | Form:+0.28 | 20.2s
+Match 32: 4-0 | Corners:14 (1) | FKs:6 (0) | Form:+0.26 | 20.8s
+Match 33: 1-0 | Corners: 8 (0) | FKs:2 (0) | Form:+0.23 | 22.0s
+Match 34: 5-0 | Corners:10 (0) | FKs:3 (0) | Form:+0.29 | 23.5s
+Match 35: 0-1 | Corners:11 (1) | FKs:3 (0) | Form:+0.08 | 20.7s
+Match 36: 8-2 | Corners:16 (2) | FKs:0 (0) | Form:+0.89 | 20.6s
+Match 37: 8-0 | Corners:12 (0) | FKs:0 (0) | Form:+0.89 | 24.9s
+Match 38: 1-1 | Corners:14 (1) | FKs:4 (0) | Form:+0.10 | 18.3s
+Match 39: 1-0 | Corners:12 (1) | FKs:3 (0) | Form:+0.14 | 19.8s
+Match 40: 2-0 | Corners: 9 (0) | FKs:4 (0) | Form:+0.20 | 22.8s
+Match 41: 1-1 | Corners:13 (2) | FKs:1 (0) | Form:-0.06 | 20.9s
+Match 42: 0-1 | Corners: 9 (1) | FKs:2 (0) | Form:+0.08 | 20.8s
+Match 43: 2-0 | Corners:11 (2) | FKs:3 (0) | Form:+0.11 | 22.0s
+Match 44: 2-1 | Corners:18 (1) | FKs:4 (0) | Form:+0.21 | 22.0s
+Match 45: 0-1 | Corners: 9 (1) | FKs:5 (0) | Form:+0.16 | 19.8s
+Match 46: 2-1 | Corners:12 (0) | FKs:4 (0) | Form:+0.39 | 22.2s
+Match 47: 1-0 | Corners:13 (0) | FKs:2 (0) | Form:+0.16 | 19.6s
+Match 48: 1-1 | Corners:19 (1) | FKs:3 (0) | Form:+0.99 | 19.3s
+Match 49: 1-0 | Corners: 8 (0) | FKs:2 (0) | Form:+0.12 | 22.3s
+Match 50: 3-0 | Corners:10 (0) | FKs:2 (0) | Form:+0.90 | 18.4s
 
 ============================================================================================================================================
 ANALYSIS RESULTS
 ============================================================================================================================================
 
 SET PIECES:
-  Corners/match:  11.8 (target: 10-12)
-  Corners scored:   0.7 per match
-  Free kicks/match:   3.9 (target: 3-4)
+  Corners/match:  11.3 (target: 10-12)
+  Corners scored:   0.6 per match
+  Free kicks/match:   3.7 (target: 3-4)
   Free kicks scored:   0.0 per match
   Set piece goals:   0.7 per match (~25% of total)
-  Set piece %% of all goals: 21.3%%
+  Set piece %% of all goals: 29.2%%
 
 PLAYER FORM:
-  Avg form: +5.80 (-10 to +10 scale)
-  Hot streaks:  14.6 players per match
-  Cold streaks:   0.1 players per match
+  Avg form: +0.33 (-10 to +10 scale)
+  Hot streaks:  10.0 players per match
+  Cold streaks:  11.0 players per match
 
 TIER 1 (Reference):
-  Fouls/match:  23.3 (target: 20.9)
-  Yellow cards:   5.3 (target: 2-3)
-  Injuries:   0.8 (target: 1-2)
+  Fouls/match:  23.4 (target: 20.9)
+  Yellow cards:   2.9 (target: 2-3)
+  Injuries:   1.0 (target: 1-2)
 
 PERFORMANCE:
   Total matches: 50
-  Total time: 1612.8s
-  Avg time/match: 32.3s
-  Avg goals/match: 3.10
+  Total time: 998.3s
+  Avg time/match: 20.0s
+  Avg goals/match: 2.26
 
 ============================================================================================================================================
 TEST COMPLETE

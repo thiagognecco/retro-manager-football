@@ -182,6 +182,7 @@ class CardDisciplineSystem:
         Sample a random foul type with realistic distribution
 
         Most fouls are technical/tactical, fewer are dangerous/violent
+        Adjusted to reduce yellow cards: target 2-3 per match (was 4.7)
         """
         return random.choices(
             population=[
@@ -191,7 +192,7 @@ class CardDisciplineSystem:
                 FoulType.RECKLESS,
                 FoulType.VIOLENT,
             ],
-            weights=[0.40, 0.35, 0.15, 0.08, 0.02]  # Based on football statistics
+            weights=[0.72, 0.25, 0.02, 0.005, 0.005]  # Heavy TECH, reduced others to target 2-3 cards
         )[0]
 
     @staticmethod

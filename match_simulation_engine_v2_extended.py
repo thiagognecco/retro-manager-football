@@ -10,6 +10,7 @@ from injury_system import InjurySystem, should_injure_player
 from substitution_system import SubstitutionSystem, Squad
 from set_pieces_system import SetPiecesSystem, SetPieceType, SetPieceOpportunity
 from player_form_system import PlayerFormSystem
+from streak_generation_system import StreakGenerationSystem
 from player_behavior import PlayerState
 from match_simulation_engine_v2 import MatchEvent, Event
 
@@ -43,6 +44,11 @@ class ExtendedMatch:
         # Initialize form for all players
         for player in self.home_team.players + self.away_team.players:
             self.form_system.initialize_player(player.id, player.name)
+
+        # TIER 2: Streak Generation (Hot/Cold streaks)
+        self.streak_system = StreakGenerationSystem()
+        for player in self.home_team.players + self.away_team.players:
+            self.streak_system.initialize_player(player.id)
 
     def check_discipline(self):
         """Check for fouls and cards each frame"""
@@ -270,9 +276,12 @@ class ExtendedMatch:
         # TIER 2: Set pieces, form updates
         self.check_set_pieces()
 
-        # Update form for active players (generate natural variance)
-        if self.current_frame % 60 == 0:  # Every minute
+        # Update form for active players (generate natural variance) - every minute
+        if self.current_frame % 60 == 0:
             self._update_form_for_active_players()
+
+        # Update streaks EVERY FRAME (much more frequent) for realistic hot/cold generation
+        self._update_streaks_for_active_players()
 
     def _update_form_for_active_players(self):
         """Update form for players based on recent activity (each minute)"""
@@ -291,6 +300,28 @@ class ExtendedMatch:
                 if random.random() < 0.50:
                     event = random.choice(['poor_pass', 'poor_pass', 'poor_pass', 'missed_chance', 'poor_pass'])
                     self.update_player_form_event(player.id, event)
+
+    def _update_streaks_for_active_players(self):
+        """Update hot/cold streaks for active players (every minute)"""
+        import random
+
+        all_players = self.home_team.players + self.away_team.players
+
+        for player in all_players:
+            if player.is_injured or player.red_card:
+                continue
+
+            # Determine if recent success (approximate via form + random)
+            player_form = self.form_system.get_player_form(player.id)
+            recent_success = player_form > 0.3 or random.random() < 0.3
+
+            # Update streak state
+            if hasattr(self, 'streak_system'):
+                self.streak_system.update_streaks(
+                    player.id,
+                    match_minute=self.current_minute,
+                    recent_success=recent_success
+                )
 
     def get_extended_stats(self) -> dict:
         """Get statistics for extended systems (TIER 1 + TIER 2)"""
@@ -320,11 +351,15 @@ class ExtendedMatch:
 
         # TIER 2 Form stats
         form_stats = self.form_system.get_system_stats()
+
+        # TIER 2 Streak stats (new system)
+        streak_stats = self.streak_system.get_active_streaks()
+
         tier2_form = {
             'player_form': {
                 'avg_form': form_stats['avg_form'],
-                'hot_streak_count': form_stats['hot_streak_count'],
-                'cold_streak_count': form_stats['cold_streak_count'],
+                'hot_streak_count': streak_stats['hot_streak_count'],  # Use new streak system
+                'cold_streak_count': streak_stats['cold_streak_count'],  # Use new streak system
             }
         }
 
@@ -363,6 +398,11 @@ def integrate_extended_systems(match_instance):
     for player in match_instance.home_team.players + match_instance.away_team.players:
         match_instance.form_system.initialize_player(player.id, player.name)
 
+    # TIER 2: Add streak generation system (new)
+    match_instance.streak_system = StreakGenerationSystem()
+    for player in match_instance.home_team.players + match_instance.away_team.players:
+        match_instance.streak_system.initialize_player(player.id)
+
     # TIER 1: Add methods
     match_instance.check_discipline = lambda: ExtendedMatch.check_discipline(match_instance)
     match_instance.check_injuries = lambda: ExtendedMatch.check_injuries(match_instance)
@@ -373,6 +413,7 @@ def integrate_extended_systems(match_instance):
     match_instance.update_player_form_event = lambda player_id, event_type: ExtendedMatch.update_player_form_event(match_instance, player_id, event_type)
     match_instance.apply_end_of_match_form_decay = lambda: ExtendedMatch.apply_end_of_match_form_decay(match_instance)
     match_instance._update_form_for_active_players = lambda: ExtendedMatch._update_form_for_active_players(match_instance)
+    match_instance._update_streaks_for_active_players = lambda: ExtendedMatch._update_streaks_for_active_players(match_instance)
 
     # Combined methods
     match_instance.process_extended_events = lambda: ExtendedMatch.process_extended_events(match_instance)
