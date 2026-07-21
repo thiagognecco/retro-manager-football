@@ -35,6 +35,10 @@ class MatchEvent(Enum):
     FOUL = "foul"
     GOAL = "goal"
     OUT_OF_BOUNDS = "out_of_bounds"
+    YELLOW_CARD = "yellow_card"
+    RED_CARD = "red_card"
+    INJURY = "injury"
+    SUBSTITUTION = "substitution"
 
 
 @dataclass

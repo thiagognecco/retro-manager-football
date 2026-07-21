@@ -408,6 +408,18 @@ class Player:
     speed: float = 7.0  # m/s
     fitness: float = 0.8  # 0-1 fitness level
 
+    # Discipline & Cards
+    yellow_cards: int = 0              # Current match yellow cards
+    red_card: bool = False             # Currently ejected?
+    fouls_committed: int = 0           # Fouls this match
+
+    # Injury System
+    is_injured: bool = False           # Currently injured?
+    injury_type: str = ""              # Type of injury
+    injury_severity: float = 0.0       # 0-1 scale
+    recovery_days_left: int = 0        # Days until recovery
+    previous_injuries: Dict = field(default_factory=dict)  # Injury history
+
     def __post_init__(self):
         """Initialize behavior tree after object creation"""
         self.behavior_tree = PlayerBehaviorTree(self)
