@@ -338,9 +338,9 @@ class Match:
                 team=self.ball_holder.team,
                 details={'distance': distance, 'xg': xg}
             ))
-            # HOOK 3: Form event for goal scored
-            if hasattr(self, 'update_player_form_event'):
-                self.update_player_form_event(shooter_id, 'goal')
+            # HOOK 3: Form event for goal scored (DISABLED - too much positive bias)
+            # if hasattr(self, 'update_player_form_event'):
+            #     self.update_player_form_event(shooter_id, 'goal')
             self._lose_ball()
         else:
             # Shot on target or miss

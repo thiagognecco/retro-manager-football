@@ -284,18 +284,12 @@ class ExtendedMatch:
             if player.is_injured or player.red_card:
                 continue
 
-            # Balanced form updates: negative events more frequent than positive
+            # Form stabilization: ONLY negative events, ZERO positive
+            # This ensures form naturally decays towards 0
             if hasattr(self, 'update_player_form_event'):
-                rand = random.random()
-
-                # Negative events (25%): poor play, missed chances
-                if rand < 0.25:
-                    event = random.choice(['poor_pass', 'poor_pass', 'missed_chance'])
-                    self.update_player_form_event(player.id, event)
-
-                # Positive events (5%): good play, defensive actions
-                elif rand < 0.30:  # 5% (0.30 - 0.25)
-                    event = random.choice(['defensive_action', 'shot_on_target'])
+                # Every player gets negative updates (50% chance per minute)
+                if random.random() < 0.50:
+                    event = random.choice(['poor_pass', 'poor_pass', 'poor_pass', 'missed_chance', 'poor_pass'])
                     self.update_player_form_event(player.id, event)
 
     def get_extended_stats(self) -> dict:

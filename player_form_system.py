@@ -64,15 +64,15 @@ class PlayerFormSystem:
 
     def __init__(self):
         """Initialize form system"""
-        # Form change constants
-        self.FORM_GOAL = 1.0  # Goal scored
-        self.FORM_ASSIST = 0.5  # Assist
-        self.FORM_SHOT_ON_TARGET = 0.2  # Shot on target
-        self.FORM_MISSED_CHANCE = -0.5  # Big miss
-        self.FORM_DEFENSIVE_ACTION = 0.3  # Tackle/interception/block
-        self.FORM_POOR_PASS = -0.1  # Failed pass
-        self.FORM_YELLOW_CARD = -0.3  # Discipline issue
-        self.FORM_INJURY = -0.5  # Just recovered
+        # Form change constants (reduced 5x for stability - form now -1 to +1 range)
+        self.FORM_GOAL = 0.2  # Goal scored (was 1.0)
+        self.FORM_ASSIST = 0.1  # Assist (was 0.5)
+        self.FORM_SHOT_ON_TARGET = 0.05  # Shot on target (was 0.2)
+        self.FORM_MISSED_CHANCE = -0.1  # Big miss (was -0.5)
+        self.FORM_DEFENSIVE_ACTION = 0.06  # Tackle/interception/block (was 0.3)
+        self.FORM_POOR_PASS = -0.02  # Failed pass (was -0.1)
+        self.FORM_YELLOW_CARD = -0.1  # Discipline issue (was -0.3)
+        self.FORM_INJURY = -0.1  # Just recovered (was -0.5)
 
         # Form decay (recovery towards 0)
         self.FORM_DECAY_RATE = 0.1  # Per match without significant events
