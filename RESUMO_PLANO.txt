@@ -1,0 +1,232 @@
+================================================================================
+                    v2.7 DEBUG & PERFORMANCE PLAN
+                         AÇÃO COMPLETA FORMULADA
+================================================================================
+
+PESQUISA REALIZADA:
+  ✓ Python cProfile Documentation - ferramentas de profiling
+  ✓ Game Loop Architecture - best practices
+  ✓ Python Memory Management - otimização
+
+PROBLEMA IDENTIFICADO:
+  Sintoma: simulate_match() trava após 2+ minutos
+  Causa: 1 frame demora ~31ms (deveria ser <2ms)
+  Raiz: Bottleneck em uma operação do loop principal
+
+================================================================================
+                          PLANO DE AÇÃO - 4 FASES
+================================================================================
+
+FASE 1: PROFILING & DIAGNOSIS (1 dia)
+────────────────────────────────────
+Objetivo: Identificar exatamente qual função/operação é lenta
+
+Técnicas:
+  1. cProfile - Ferrramenta padrão Python
+     python -m cProfile -s cumulative script.py
+     Mostra: ncalls, tottime, cumtime, percall
+
+  2. Timing Prints Estratégicos
+     Adicionar time.perf_counter() em:
+     - simulate_frame()
+     - Behaviors (22x)
+     - Movement (22x)
+     - Events processing
+
+  3. Análise dos Dados
+     Procurar por:
+     - Função com maior cumulative time
+     - Função chamada muitas vezes
+     - Padrão O(n²) suspeito
+
+RESULTADO ESPERADO:
+  "Behaviors toma 15.43ms por frame" ← CULPADO
+  OU
+  "Movement toma 8.92ms por frame" ← CULPADO
+  OU
+  "Nearby agents processa 10000x vezes" ← CULPADO
+
+────────────────────────────────────────────────────────────────────────────
+
+FASE 2: INVESTIGAÇÃO PROFUNDA (1 dia)
+──────────────────────────────
+Objetivo: Entender POR QUÊ a operação é lenta
+
+Se Bottleneck = Behaviors (15.43ms):
+  ├─ Behavior tree rodando 22x por frame
+  ├─ Cada tree tem 5-6 níveis de profundidade
+  ├─ Possível: recursão profunda
+  └─ Possível: string matching caros
+
+Se Bottleneck = Movement (8.92ms):
+  ├─ A* pathfinding rodando a cada frame (não deveria!)
+  ├─ RVO collision é O(k²) onde k=22
+  ├─ Nearby agents chamado 22x por frame
+  └─ Possível: algoritmo ineficiente
+
+Se Bottleneck = Tactical Positioning (taxa desconhecida):
+  ├─ GNN prediction por 22 players
+  ├─ Operações matemáticas custosas
+  └─ Possível: não vectorizado
+
+FERRAMENTAS:
+  - print() com time.perf_counter()
+  - Adicionar contadores de chamadas
+  - Memory profiler se necessário
+
+────────────────────────────────────────────────────────────────────────────
+
+FASE 3: OTIMIZAÇÃO (1-2 dias)
+──────────────
+Objetivo: Reduzir tempo de frame de 31ms para <2ms
+
+OTIMIZAÇÕES LOW-HANGING (15x mais rápido):
+  ✓ Remover prints de debug
+  ✓ Lazy pathfinding (só se target muda)
+  ✓ Cache nearby agents (recalcular 1x por 10 frames)
+  ✓ Usar Enum ao invés de strings
+  ✓ Pre-allocate arrays
+
+OTIMIZAÇÕES MEDIUM (5-10x mais rápido):
+  ✓ Numba JIT para operações vetorizadas
+  ✓ Reduce repeated grid queries
+  ✓ Vectorize numpy operations
+  ✓ Reduce behavior tree depth
+
+OTIMIZAÇÕES ADVANCED (se necessário):
+  ✓ Multi-threading para behaviors
+  ✓ C-extensions para hot loops
+  ✓ Restructure algorithm
+
+ALVO FINAL:
+  1 frame: 31.79ms → <2ms (15-16x mais rápido)
+  1 match: Trava → <3 minutos
+  1000 matches: ~50 minutos (viável overnight)
+
+────────────────────────────────────────────────────────────────────────────
+
+FASE 4: VALIDAÇÃO (1 dia)
+──────────────
+Objetivo: Confirmar que tudo funciona
+
+Checkpoint 1: 1 Frame
+  [ ] 1 frame < 10ms
+  [ ] Rodar 10 frames, total < 100ms
+
+Checkpoint 2: 1 Minuto
+  [ ] 60 frames < 10 segundos
+  [ ] Ver se padrão se repete
+
+Checkpoint 3: 1 Match Completo
+  [ ] 90 minutos (5400 frames) < 3 minutos
+  [ ] Resultado final correto
+  [ ] Zero crashes
+
+Checkpoint 4: Escala
+  [ ] 5 matches < 15 minutos
+  [ ] 1000 matches viável (overnight)
+
+================================================================================
+                           TIMELINE PROPOSTO
+================================================================================
+
+DIA 1 (24/07):
+  09:00 - 10:00 (1h)   Rodar profiling, identificar bottleneck
+  10:00 - 12:00 (2h)   Adicionar timing prints, investigar
+  14:00 - 15:00 (1h)   Análise dos dados, definir próximo passo
+                       TOTAL: 4h (manhã/tarde)
+
+DIA 2 (25/07):
+  09:00 - 11:00 (2h)   Implementar otimizações low-hanging
+  11:00 - 12:00 (1h)   Testar e validar
+  14:00 - 16:00 (2h)   Medium optimizations se necessário
+                       TOTAL: 5h (chão de fábrica)
+
+DIA 3 (26/07):
+  09:00 - 10:00 (1h)   Final tweaks & testing
+  14:00 - 22:00 (8h)   Rodar 1000 matches (overnight test)
+                       TOTAL: 9h (validação)
+
+TOTAL: 3 dias de trabalho (18 horas)
+
+================================================================================
+                        FERRAMENTAS & REFERÊNCIAS
+================================================================================
+
+Ferramentas:
+  ✓ Python cProfile (built-in)
+    - Profiling determinístico
+    - Mostra exatamente onde tempo é gasto
+    - Sem overhead significativo
+
+  ✓ time.perf_counter()
+    - Timer de alta resolução
+    - Perfeito para medir operações
+
+  ✓ Numba JIT (opcional)
+    - Compilação just-in-time
+    - 10-100x mais rápido em loops
+
+Referências Usadas:
+  1. Python Documentation - cProfile Module
+     Como usar Stats.sort_stats(), interpretar output
+
+  2. Game Loop Architecture (Wikipedia)
+     Estrutura padrão de game loop
+     Importância de frame timing
+     Multi-threading strategies
+
+  3. Python Performance Best Practices
+     Lazy evaluation em game loops
+     Vectorization com numpy
+     Memory management
+
+================================================================================
+                            PRÓXIMO PASSO
+================================================================================
+
+Executar amanhã (24/07):
+
+1. Criar profile_match.py:
+   ```python
+   import cProfile, pstats, io
+   from match_simulation_engine_v2 import Match, create_sample_teams
+
+   pr = cProfile.Profile()
+   pr.enable()
+   m = Match(*create_sample_teams())
+   m.simulate_match()
+   pr.disable()
+
+   s = io.StringIO()
+   ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+   ps.print_stats(20)
+   print(s.getvalue())
+   ```
+
+2. Rodar:
+   python profile_match.py > profile_output.txt 2>&1
+
+3. Analisar saída:
+   - Top 3 funções por tempo
+   - Quantas vezes cada uma é chamada
+   - Identificar padrão
+
+4. Adicionar timing prints nas funções suspeitas
+
+5. Ir para Fase 2: Investigação profunda
+
+================================================================================
+                         STATUS & COMMIT
+================================================================================
+
+✓ Plano formulado com base em pesquisa
+✓ 4 fases detalhadas com checkpoints
+✓ Referências de Python profiling
+✓ Timeline realista (3 dias)
+✓ Documentação completa em PLANO_DEBUG_PERFORMANCE.md
+✓ Commit 94c234e - Plano adicionado ao repositório
+
+READY TO START: 24/07/2026
+
+================================================================================
