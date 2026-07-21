@@ -80,9 +80,12 @@ class Selector(BehaviorNode):
     def __init__(self, children: List[BehaviorNode], name: str = "Selector"):
         self.children = children
         self.name = name
+        self.call_count = 0
 
     def tick(self, player: 'Player', context: Dict) -> str:
-        for child in self.children:
+        self.call_count += 1
+
+        for i, child in enumerate(self.children):
             result = child.tick(player, context)
             if result == 'SUCCESS':
                 return 'SUCCESS'
@@ -345,8 +348,18 @@ class PlayerBehaviorTree:
         ], name="PlayerBehavior")
 
     def tick(self, context: Dict) -> str:
-        """Execute behavior tree tick"""
-        return self.root.tick(self.player, context)
+        """Execute behavior tree tick with timing"""
+        import time
+        t_start = time.perf_counter()
+        result = self.root.tick(self.player, context)
+        t_end = time.perf_counter()
+
+        # Log slow ticks (> 100ms for debugging)
+        elapsed_ms = (t_end - t_start) * 1000
+        if elapsed_ms > 100 and self.player.id == 1:  # Only log for first player to avoid spam
+            print(f"  [SLOW TICK] Player {self.player.id}: {elapsed_ms:.2f}ms")
+
+        return result
 
 
 # ============================================================================

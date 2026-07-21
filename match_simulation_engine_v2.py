@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 import random
 import math
+import time
 
 from spatial_hash_grid import SpatialHashGrid
 from player_behavior import Player, PlayerRole, PlayerState, build_match_context
@@ -159,43 +160,51 @@ class Match:
 
     def simulate_frame(self, dt: float = 1.0/60.0) -> None:
         """
-        Simulate one frame
+        Simulate one frame with timing instrumentation
 
         Args:
             dt: Delta time in seconds
         """
+        frame_start = time.perf_counter()
         all_players = self.home_team.players + self.away_team.players
 
-        # Update tactical state
+        # TIMING: Tactical state update
+        t1 = time.perf_counter()
         self.tactical_state.update(
             all_players,
             self.ball_position,
             self.ball_possession,
             {'Home': self.home_team.score, 'Away': self.away_team.score}
         )
+        t2 = time.perf_counter()
 
-        # Build tactical graph (GNN reasoning)
+        # TIMING: Tactical graph build
         self.tactical_graph.build_graph(all_players, self.tactical_state.to_dict())
+        t3 = time.perf_counter()
 
-        # Predict ideal positions
+        # TIMING: Predict positions
         ideal_positions = self.tactical_graph.predict_positions(
             all_players,
             self.tactical_state.to_dict(),
             self.home_team.formation if self.ball_possession == "Home" else self.away_team.formation
         )
+        t4 = time.perf_counter()
 
-        # Update behaviors
+        # TIMING: Update behaviors (22 players)
         context = build_match_context({
             'spatial_grid': self.spatial_grid,
             'ball_holder': self.ball_holder,
             'ball_position': self.ball_position,
         })
 
-        for player in all_players:
-            # Tick behavior tree
-            player.update_behavior(context)
+        behavior_start = time.perf_counter()
+        slow_players = []
 
-            # Set movement target based on behavior
+        for player in all_players:
+            p_start = time.perf_counter()
+            player.update_behavior(context)
+            p_behavior = time.perf_counter() - p_start
+
             if player.state == PlayerState.MOVING_TO_POSITION:
                 target = ideal_positions.get(player.id, (player.x, player.y))
                 self.movement_controllers[player.id].set_target(target)
@@ -209,20 +218,49 @@ class Match:
                     target = (target_player.x, target_player.y)
                     self.movement_controllers[player.id].set_target(target)
 
-            # Update movement
+            # TIMING: Player movement update (22 players)
             self.movement_controllers[player.id].update(dt)
 
-        # Update spatial grid
+            # Track slow players
+            p_total = (time.perf_counter() - p_start) * 1000
+            if p_total > 100:
+                slow_players.append((player.id, p_total))
+
+        behavior_end = time.perf_counter()
+        t5 = behavior_end
+
+        # TIMING: Spatial grid rebuild
+        grid_start = time.perf_counter()
         self.spatial_grid.clear()
         for player in all_players:
             self.spatial_grid.add_agent(player, player.x, player.y)
+        grid_end = time.perf_counter()
+        t6 = grid_end
 
-        # Check for events
+        # TIMING: Events processing
+        event_start = time.perf_counter()
         self._process_events()
+        event_end = time.perf_counter()
+        t7 = event_end
 
         # Update stamina (every second)
         if self.current_frame % 60 == 0:
             self._update_stamina()
+
+        frame_end = time.perf_counter()
+        total_ms = (frame_end - frame_start) * 1000
+
+        # Print timing breakdown every 60 frames OR first frame
+        if (self.current_frame % 60 == 0 and self.current_frame > 0) or self.current_frame == 0:
+            print(f"\n[FRAME {self.current_frame}] Minute {self.current_minute} - Total: {total_ms:.2f}ms")
+            print(f"  Tactical State: {(t2-t1)*1000:.2f}ms")
+            print(f"  Graph Build:    {(t3-t2)*1000:.2f}ms")
+            print(f"  Predict Pos:    {(t4-t3)*1000:.2f}ms")
+            print(f"  Behaviors (22x):{(t5-t4)*1000:.2f}ms (avg: {(t5-t4)*1000/22:.2f}ms per player)")
+            if slow_players:
+                print(f"    Slow players: {slow_players[:5]}")  # Show top 5 slowest
+            print(f"  Grid Rebuild:   {(t6-t5)*1000:.2f}ms")
+            print(f"  Events:         {(t7-t6)*1000:.2f}ms")
 
     def _process_events(self) -> None:
         """Check for and process match events"""
