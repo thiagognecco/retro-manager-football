@@ -284,15 +284,18 @@ class ExtendedMatch:
             if player.is_injured or player.red_card:
                 continue
 
-            # Players with ball get small boost
-            if player.has_ball and hasattr(self, 'update_player_form_event'):
-                if random.random() < 0.3:  # 30% chance of form update per minute
-                    self.update_player_form_event(player.id, 'shot_on_target')
+            # Balanced form updates: negative events more frequent than positive
+            if hasattr(self, 'update_player_form_event'):
+                rand = random.random()
 
-            # Random form variance for other active players
-            elif random.random() < 0.1:  # 10% chance
-                if hasattr(self, 'update_player_form_event'):
-                    event = random.choice(['defensive_action', 'poor_pass'])
+                # Negative events (25%): poor play, missed chances
+                if rand < 0.25:
+                    event = random.choice(['poor_pass', 'poor_pass', 'missed_chance'])
+                    self.update_player_form_event(player.id, event)
+
+                # Positive events (5%): good play, defensive actions
+                elif rand < 0.30:  # 5% (0.30 - 0.25)
+                    event = random.choice(['defensive_action', 'shot_on_target'])
                     self.update_player_form_event(player.id, event)
 
     def get_extended_stats(self) -> dict:
