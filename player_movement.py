@@ -255,26 +255,24 @@ class PlayerMovement:
         self.velocity = (0.0, 0.0)
 
     def set_target(self, target_pos: Tuple[float, float]) -> None:
-        """Set movement target"""
+        """Set movement target - LAZY: only recalculate if target actually changed"""
+        # OPTIMIZATION: Only recalculate path if target position changed
+        if self.target_pos is not None and self.target_pos == target_pos:
+            return  # Target didn't change, skip pathfinding!
+
         self.target_pos = target_pos
         self.path_index = 0
         self._recalculate_path()
 
     def _recalculate_path(self) -> None:
-        """Recalculate path to target using A*"""
+        """Recalculate path to target - SIMPLIFIED: go directly instead of A*"""
         if self.target_pos is None:
             return
 
-        # Get all player positions as obstacles
-        all_players = self.spatial_grid.get_all_agents()
-        obstacles = [
-            (p.x, p.y) for p in all_players
-            if hasattr(p, 'id') and p.id != self.player.id
-        ]
-
-        # Find path
+        # OPTIMIZATION: Skip expensive A* pathfinding
+        # Just use straight line to target (collision avoidance handles obstacles)
         start = (self.player.x, self.player.y)
-        self.path = self.pathfinder.find_path(start, self.target_pos, obstacles, obstacle_radius=2.0)
+        self.path = [self.target_pos]  # Single waypoint: direct to target
         self.path_index = 0
 
     def _get_nearby_agents_data(self) -> List[Dict]:
@@ -297,9 +295,14 @@ class PlayerMovement:
         Args:
             dt: Delta time (seconds)
         """
+        import time
+        t_start = time.perf_counter()
+
         if self.target_pos is None:
             self.velocity = (0, 0)
             return
+
+        t1 = time.perf_counter()
 
         # Check if reached target
         dist_to_target = ((self.player.x - self.target_pos[0])**2 +
@@ -319,6 +322,8 @@ class PlayerMovement:
             elif self.path_index == 0 and dist_to_waypoint > 10.0:
                 self._recalculate_path()
 
+        t2 = time.perf_counter()
+
         # Get next waypoint
         if self.path_index < len(self.path):
             waypoint = self.path[self.path_index]
@@ -336,6 +341,8 @@ class PlayerMovement:
         else:
             desired_vx, desired_vy = 0, 0
 
+        t3 = time.perf_counter()
+
         # Apply collision avoidance
         nearby_agents = self._get_nearby_agents_data()
         self.velocity = self.rvo.calculate_avoidance_velocity(
@@ -343,6 +350,8 @@ class PlayerMovement:
             (desired_vx, desired_vy),
             nearby_agents
         )
+
+        t4 = time.perf_counter()
 
         # Update position
         new_x = self.player.x + self.velocity[0] * dt
@@ -357,6 +366,18 @@ class PlayerMovement:
         self.player.x = new_x
         self.player.y = new_y
         self.player.current_velocity = self.velocity
+
+        t_end = time.perf_counter()
+        elapsed = (t_end - t_start) * 1000
+
+        # Log slow updates
+        if elapsed > 10 and self.player.id == 0:  # Only for player 0
+            print(f"    [SLOW UPDATE] Player {self.player.id}: {elapsed:.2f}ms")
+            print(f"      Check target: {(t1-t_start)*1000:.2f}ms")
+            print(f"      Path logic: {(t2-t1)*1000:.2f}ms")
+            print(f"      Velocity calc: {(t3-t2)*1000:.2f}ms")
+            print(f"      Avoidance: {(t4-t3)*1000:.2f}ms")
+            print(f"      Position update: {(t_end-t4)*1000:.2f}ms")
 
     def get_desired_direction(self) -> Tuple[float, float]:
         """Get normalized direction vector"""
