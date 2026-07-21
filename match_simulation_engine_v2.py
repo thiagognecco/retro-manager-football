@@ -291,6 +291,7 @@ class Match:
 
         if random.random() < success_prob:
             # Pass successful
+            passer_id = self.ball_holder.id
             self.ball_holder.has_ball = False
             new_holder = self.ball_holder.pass_target
             new_holder.has_ball = True
@@ -300,8 +301,11 @@ class Match:
                 time=self.current_minute,
                 player_id=new_holder.id,
                 team=new_holder.team,
-                details={'distance': self.ball_holder.pass_distance}
+                details={'distance': distance, 'passer_id': passer_id}
             ))
+            # HOOK 2: Form event for successful pass
+            if hasattr(self, 'update_player_form_event'):
+                self.update_player_form_event(passer_id, 'shot_on_target')  # Treat pass success as positive event
         else:
             # Pass intercepted - lose ball
             self._lose_ball()
@@ -314,6 +318,7 @@ class Match:
         # Calculate xG based on position
         distance = self.ball_holder.shot_distance
         angle = self.ball_holder.shot_angle
+        shooter_id = self.ball_holder.id
 
         # Simple xG calculation
         xg = self._calculate_xg(distance, angle)
@@ -329,20 +334,26 @@ class Match:
             self.events.append(Event(
                 event_type=MatchEvent.GOAL,
                 time=self.current_minute,
-                player_id=self.ball_holder.id,
+                player_id=shooter_id,
                 team=self.ball_holder.team,
                 details={'distance': distance, 'xg': xg}
             ))
+            # HOOK 3: Form event for goal scored
+            if hasattr(self, 'update_player_form_event'):
+                self.update_player_form_event(shooter_id, 'goal')
             self._lose_ball()
         else:
             # Shot on target or miss
             self.events.append(Event(
                 event_type=MatchEvent.SHOT,
                 time=self.current_minute,
-                player_id=self.ball_holder.id,
+                player_id=shooter_id,
                 team=self.ball_holder.team,
                 details={'distance': distance, 'angle': angle, 'xg': xg}
             ))
+            # HOOK 4: Form event for missed shot
+            if hasattr(self, 'update_player_form_event'):
+                self.update_player_form_event(shooter_id, 'missed_chance')
             self._lose_ball()
 
     def _calculate_xg(self, distance: float, angle: float) -> float:

@@ -8,7 +8,7 @@ import random
 from card_discipline_system import CardDisciplineSystem, CardType, should_award_foul
 from injury_system import InjurySystem, should_injure_player
 from substitution_system import SubstitutionSystem, Squad
-from set_pieces_system import SetPiecesSystem, SetPieceType
+from set_pieces_system import SetPiecesSystem, SetPieceType, SetPieceOpportunity
 from player_form_system import PlayerFormSystem
 from player_behavior import PlayerState
 from match_simulation_engine_v2 import MatchEvent, Event
@@ -88,6 +88,10 @@ class ExtendedMatch:
                         }
                     ))
 
+                    # HOOK: Update form for yellow card
+                    if hasattr(self, 'update_player_form_event'):
+                        self.update_player_form_event(player.id, 'yellow_card')
+
     def check_injuries(self):
         """Check for injuries each frame"""
         all_players = self.home_team.players + self.away_team.players
@@ -149,11 +153,86 @@ class ExtendedMatch:
                     self.substitutions_made[team_key] += 1
 
     def check_set_pieces(self):
-        """Check for set piece opportunities each frame (TIER 2)"""
-        # This would be called when ball goes out of play
-        # Detection happens in main simulate_frame() when ball_out_of_bounds
-        # For now, this is a hook for future integration
-        pass
+        """Check for set piece opportunities each minute (TIER 2)"""
+        # Generate set pieces probabilistically each minute based on realistic frequencies
+        # Average: 11 corners per 90 min = ~0.122 per minute
+        # Average: 3.5 free kicks per 90 min = ~0.039 per minute
+
+        import random
+
+        # Corner generation (0.122 per minute = 11 per 90)
+        if random.random() < 0.122:
+            # Randomly decide which team gets corner
+            attacking_team = random.choice(["Home", "Away"])
+            corner_type = self.set_pieces_system._determine_corner_type()
+
+            corner = SetPieceOpportunity(
+                piece_type=corner_type,
+                time=self.current_minute,
+                team=attacking_team,
+                position=self.ball_position,
+                xg=self.set_pieces_system.CORNER_XG,
+            )
+
+            self.set_pieces_system.stats.total_corners += 1
+            self.set_pieces_system.stats.set_piece_xg += corner.xg
+            self.set_pieces_log.append(corner)
+
+            # Random chance corner results in goal (5.3% inswinger, 3.6% outswinger)
+            goal_rate = (
+                self.set_pieces_system.CORNER_INSWINGER_GOAL_RATE
+                if corner_type == SetPieceType.CORNER_INSWINGER
+                else self.set_pieces_system.CORNER_OUTSWINGER_GOAL_RATE
+            )
+
+            if random.random() < goal_rate:
+                # Corner resulted in goal!
+                if attacking_team == "Home":
+                    self.home_team.score += 1
+                else:
+                    self.away_team.score += 1
+
+                self.set_pieces_system.stats.set_piece_goals += 1
+                self.set_pieces_system.stats.corners_scored += 1
+
+        # Free kick generation (0.039 per minute = 3.5 per 90)
+        if random.random() < 0.039:
+            attacking_team = random.choice(["Home", "Away"])
+            is_direct = random.random() < 0.3  # 30% direct
+
+            piece_type = (
+                SetPieceType.FREE_KICK_DIRECT
+                if is_direct
+                else SetPieceType.FREE_KICK_INDIRECT
+            )
+
+            fk = SetPieceOpportunity(
+                piece_type=piece_type,
+                time=self.current_minute,
+                team=attacking_team,
+                position=self.ball_position,
+                xg=self.set_pieces_system.FREE_KICK_XG,
+            )
+
+            self.set_pieces_system.stats.total_free_kicks += 1
+            self.set_pieces_system.stats.set_piece_xg += fk.xg
+            self.set_pieces_log.append(fk)
+
+            # Random chance free kick results in goal
+            goal_rate = (
+                self.set_pieces_system.FREE_KICK_GOAL_RATE * 2
+                if is_direct
+                else self.set_pieces_system.FREE_KICK_GOAL_RATE
+            )
+
+            if random.random() < goal_rate:
+                if attacking_team == "Home":
+                    self.home_team.score += 1
+                else:
+                    self.away_team.score += 1
+
+                self.set_pieces_system.stats.set_piece_goals += 1
+                self.set_pieces_system.stats.free_kicks_scored += 1
 
     def update_player_form_event(self, player_id: int, event_type: str):
         """Update player form based on match event (TIER 2)"""
@@ -190,6 +269,31 @@ class ExtendedMatch:
 
         # TIER 2: Set pieces, form updates
         self.check_set_pieces()
+
+        # Update form for active players (generate natural variance)
+        if self.current_frame % 60 == 0:  # Every minute
+            self._update_form_for_active_players()
+
+    def _update_form_for_active_players(self):
+        """Update form for players based on recent activity (each minute)"""
+        import random
+
+        all_players = self.home_team.players + self.away_team.players
+
+        for player in all_players:
+            if player.is_injured or player.red_card:
+                continue
+
+            # Players with ball get small boost
+            if player.has_ball and hasattr(self, 'update_player_form_event'):
+                if random.random() < 0.3:  # 30% chance of form update per minute
+                    self.update_player_form_event(player.id, 'shot_on_target')
+
+            # Random form variance for other active players
+            elif random.random() < 0.1:  # 10% chance
+                if hasattr(self, 'update_player_form_event'):
+                    event = random.choice(['defensive_action', 'poor_pass'])
+                    self.update_player_form_event(player.id, event)
 
     def get_extended_stats(self) -> dict:
         """Get statistics for extended systems (TIER 1 + TIER 2)"""
@@ -269,8 +373,9 @@ def integrate_extended_systems(match_instance):
 
     # TIER 2: Add methods
     match_instance.check_set_pieces = lambda: ExtendedMatch.check_set_pieces(match_instance)
-    match_instance.update_player_form_event = lambda event_type, player_id: ExtendedMatch.update_player_form_event(match_instance, player_id, event_type)
+    match_instance.update_player_form_event = lambda player_id, event_type: ExtendedMatch.update_player_form_event(match_instance, player_id, event_type)
     match_instance.apply_end_of_match_form_decay = lambda: ExtendedMatch.apply_end_of_match_form_decay(match_instance)
+    match_instance._update_form_for_active_players = lambda: ExtendedMatch._update_form_for_active_players(match_instance)
 
     # Combined methods
     match_instance.process_extended_events = lambda: ExtendedMatch.process_extended_events(match_instance)
